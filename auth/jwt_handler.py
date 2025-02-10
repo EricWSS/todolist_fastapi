@@ -6,8 +6,9 @@ from db.database import get_db
 from sqlalchemy.orm import Session
 from models.user import User
 from fastapi.security import OAuth2PasswordBearer
+import os
 
-SECRET_KEY = "your_secret_key"  # A chave secreta
+SECRET_KEY = os.environ.get("SECRET_KEY") # ""  # A chave secreta É com ela que nó desencriptamos o token
 ALGORITHM = "HS256"
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
@@ -15,7 +16,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 # Função para criar o token de acesso
 def create_access_token(data: dict): # Não fiz nada novo
     payload = data.copy()
-    expire = datetime.now() + timedelta(hours=30)  # Token expira em 30 horas
+    expire = datetime.now() + timedelta(hours=2)  # Token expira em 30 horas
     payload.update({"exp": expire})
     token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
     return token

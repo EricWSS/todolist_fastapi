@@ -17,27 +17,27 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 def hash_password(password: str):
     return pwd_context.hash(password)
 
-def register_user(user: UserCreate, db: Session = Depends(get_db)):
-    # Verifica se o email já está cadastrado
-    existing_user = db.query(User).filter(User.email == user.email).first()
-    if existing_user:
-        raise HTTPException(status_code=400, detail="Email já registrado")
+# def register_user(user: UserCreate, db: Session = Depends(get_db)):
+#     # Verifica se o email já está cadastrado
+#     existing_user = db.query(User).filter(User.email == user.email).first()
+#     if existing_user:
+#         raise HTTPException(status_code=400, detail="Email já registrado")
 
-    # Cria o novo usuário
-    hashed_password = hash_password(user.password)
+#     # Cria o novo usuário
+#     hashed_password = hash_password(user.password)
     
-    new_user = User(
-        name=user.name, 
-        email=user.email, 
-        password=hashed_password,
-        role=user.role
-    )
+#     new_user = User(
+#         name=user.name, 
+#         email=user.email, 
+#         password=hashed_password,
+#         role=user.role
+#     )
     
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
+#     db.add(new_user)
+#     db.commit()
+#     db.refresh(new_user)
 
-    return {"message": "Usuário criado com sucesso!", "user": new_user}
+#     return {"message": "Usuário criado com sucesso!", "user": new_user}
 
 @router.post("/register")
 def register_user(user: UserCreate, db: Session = Depends(get_db)):
